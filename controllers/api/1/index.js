@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = new express.Router();
 
 // post a new Object to Algolia
