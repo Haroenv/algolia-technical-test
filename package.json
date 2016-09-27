@@ -11,7 +11,7 @@
     "url": "git+https://github.com/haroenv/algolia-technical-test.git"
   },
   "author": "Haroen Viaene <hello@haroen.me>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/haroenv/algolia-technical-test/issues"
   },
