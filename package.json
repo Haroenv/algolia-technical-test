@@ -23,6 +23,7 @@
     "space": true
   },
   "devDependencies": {
+    "pre-commit": "^1.1.3",
     "xo": "^0.16.0"
   }
 }
