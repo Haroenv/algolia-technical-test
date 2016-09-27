@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/haroenv/algolia-technical-test#readme",
   "dependencies": {
+    "algoliasearch": "^3.18.1",
     "express": "^4.14.0"
   },
   "xo": {
