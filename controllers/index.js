@@ -5,7 +5,7 @@ const router = new express.Router();
 router.use('/api/1', require('./api/1'));
 
 router.get('/', function (req, res) {
-  res.send('Home page');
+  res.render('index.pug');
 });
 
 module.exports = router;
