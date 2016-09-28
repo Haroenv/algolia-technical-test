@@ -2,26 +2,39 @@
 
 <head>
   <title>Algolia technical test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.3/css/tachyons.min.css" />
+  <style>
+    .bg-none {
+      background-color: transparent;
+    }
+    .visuallyhidden {
+      position: absolute;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      height: 1px; width: 1px;
+      margin: -1px; padding: 0; border: 0;
+    }
+  </style>
   <!-- todo -->
 </head>
 
-<body>
+<body class="mw8 center">
   <div id="app">
-    <input type="search" v-model="search" @input="setQuery" id="search">
+    <div class="w-100 flex justify-center">
+      <input type="search" v-model="search" @input="setQuery" id="search" class="w-80 f2 mh2 mv2 ph2 pv2 br2 b--black-10">
+    </div>
+    <article>
+      <h1 class="visuallyhidden">category</h1>
+      <div>
+        <button v-for="category of categories" v-if="category" class="f6 link dim br-pill ba b--black-10 bw1 ph3 pv2 mb2 mh1 dib bg-none" @click="refine(category.name)">{{category.name}} ({{category.count}})</button>
+      </div>
+    </article>
     <section>
       <h2>Results</h2>
-      <article>
-        <h1>category</h1>
-        <ul>
-          <li v-for="category of categories" v-if="category">
-            <input type="checkbox" :id="'fl-' + category.name" :data-category="category.name" @change="refine" :checked="category.isRefined">
-            <label :for="'fl-' + category.name">{{category.name}} ({{category.count}})</label>
-          </li>
-        </ul>
-      </article>
-      <article v-if="results.length === 0">no results</article>
-      <div class="mw6 center">
+      <article v-if="results.length === 0" class="center">no results</article>
+      <div>
+        <p>{{numberHits}} hits in {{processingTime}}ms</p>
         <article v-for="result of results" class="dt w-100 bb b--black-05 pb2 mt2">
           <a :href="result.link" class="dtc w2 w3-ns v-mid">
             <img :src="result.image" class="ba b--black-10 db br4 w2 w3-ns h2 h3-ns pointer">
@@ -37,15 +50,14 @@
           </div>
         </article>
       </div>
-      <nav v-if="pagination.total > 0" class="ph3 ph5-ns pv4">
+      <nav v-if="pagination.total > 1" class="ph3 ph5-ns pv4">
         <div class="nowrap overflow-x-auto">
-          <!-- :class="{'active': n - 1 === pagination.current}" -->
-          <a @click.stop="paginate(n)" class="link dim gray f5 f4-ns dib mr3 pointer" v-for="n in pagination.total">{{n}}</a>
+          <a @click="paginate(n - 1)" :class="(n - 1 === pagination.current ? 'black ' : 'gray ') +'link dim f5 f4-ns dib mr3 pointer'" v-for="n of pagination.total">{{n}}</a>
         </div>
       </nav>
     </section>
   </div>
-  <script src="http://rc.vuejs.org/js/vue.js"></script>
+  <script src="https://rc.vuejs.org/js/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
   <script src="https://cdn.jsdelivr.net/algoliasearch.helper/2.14.0/algoliasearch.helper.min.js"></script>
   <script>
@@ -62,10 +74,12 @@
       results: [],
       pagination: {
         total: 0,
-        current: 0,
+        current: 1,
         resultsPerPage: 0
       },
-      categories: []
+      categories: [],
+      processingTime: 0,
+      numberHits: 0
     },
     methods: {
       queryDone(content) {
@@ -76,19 +90,17 @@
           resultsPerPage: content.hitsPerPage
         };
         this.categories = content.getFacetValues('category');
+        this.processingTime = content.processingTimeMS;
+        this.numberHits = content.nbHits;
       },
       setQuery() {
-        helper.setQuery(this.search)
-              .search();
+        helper.setQuery(this.search).search();
       },
-      refine(event) {
-        console.log(event.target.dataset.category);
-        helper.toggleRefinement('category', event.target.dataset.category)
-              .search();
+      refine(category) {
+        helper.toggleRefinement('category', category).search();
       },
       paginate(page) {
-        this.params.page = page - 1;
-        this.query();
+        helper.setPage(page).search();
       }
     }
   });
