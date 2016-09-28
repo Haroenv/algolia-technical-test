@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.3/css/tachyons.min.css" />
   <style>
-    .bg-none {
-      background-color: transparent;
-    }
-    .visuallyhidden {
-      position: absolute;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      height: 1px; width: 1px;
-      margin: -1px; padding: 0; border: 0;
-    }
+  .bg-none {
+    background-color: transparent;
+  }
+
+  .visuallyhidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+  }
   </style>
   <!-- todo -->
 </head>
@@ -23,13 +27,19 @@
   <div id="app">
     <div class="w-100 flex items-center flex-column mv2">
       <p class="flex items-center"><img src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg" alt="logo of Algolia" title="Algolia" class="w3"> <span class="mh2">＋</span> <img src="https://s.haroen.me/img/vue.svg" alt="logo of vue" title="Vue" class="w3"></p>
-      <input type="search" v-model="search" @input="setQuery" id="search" class="w-80 f2 mh2 mv2 ph2 pv2 br2 b--black-10">
+      <input type="search" v-model="search" class="w-80 f2 mh2 mv2 ph2 pv2 br2 b--black-10">
     </div>
     <article>
       <h1 class="visuallyhidden">category</h1>
       <div>
-        <button v-for="category of categories" v-if="category" class="f6 link dim br-pill ba b--black-10 bw1 ph3 pv2 mb2 mh1 dib bg-none" @click="refine(category.name)">{{category.name}} ({{category.count}})</button>
+        <button v-for="category of categories" v-if="category" class="f6 link dim br-pill ba b--black-10 bw1 ph3 pv2 mb2 mr1 dib bg-none" @click="refine(category.name)">{{category.name}} ({{category.count}})</button>
       </div>
+    </article>
+    <article>
+      <select v-model="index">
+        <option value="appstore_rating_desc">rating descending</option>
+        <option value="appstore_rating_asc">rating acending</option>
+      </select>
     </article>
     <section>
       <h2>Results</h2>
@@ -80,7 +90,16 @@
       },
       categories: [],
       processingTime: 0,
-      numberHits: 0
+      numberHits: 0,
+      index: 'appstore_rating_asc'
+    },
+    watch: {
+      index: (val) => {
+        helper.setIndex(val).search();
+      },
+      search: (val) => {
+        helper.setQuery(val).search();
+      }
     },
     methods: {
       queryDone(content) {
@@ -93,9 +112,6 @@
         this.categories = content.getFacetValues('category');
         this.processingTime = content.processingTimeMS;
         this.numberHits = content.nbHits;
-      },
-      setQuery() {
-        helper.setQuery(this.search).search();
       },
       refine(category) {
         helper.toggleRefinement('category', category).search();
