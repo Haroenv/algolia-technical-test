@@ -26,7 +26,11 @@
 <body class="mw8 center ph2">
   <div id="app">
     <div class="w-100 flex items-center flex-column mv2">
-      <p class="flex items-center"><img src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg" alt="logo of Algolia" title="Algolia" class="w3"> <span class="mh2">＋</span> <img src="https://s.haroen.me/img/vue.svg" alt="logo of vue" title="Vue" class="w3"></p>
+      <div class="flex items-center">
+        <a href="https://algolia.com"><img src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg" alt="logo of Algolia" title="Algolia" class="w3"></a>
+        <span class="mh2" title="plus">＋</span>
+        <a href="https://vuejs.org"><img src="https://s.haroen.me/img/vue.svg" alt="logo of vue" title="Vue" class="w3"></a>
+      </div>
       <al-input :helper="helper"></al-input>
     </div>
     <al-categories :categories="categories" :helper="helper"></al-categories>
