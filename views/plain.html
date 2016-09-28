@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+
 <head>
-  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.3/css/tachyons.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.3/css/tachyons.min.css" />
   <!-- todo -->
 </head>
+
 <body>
   <div id="app">
     <input type="search" v-model="search" v-on:input="query" id="search">
@@ -11,20 +13,34 @@
       <article>
         <h1>category</h1>
         <ul>
-          <li><input type="checkbox" id="box"><label for="box">some category</label></li>
+          <li>
+            <input type="checkbox" id="box">
+            <label for="box">some category</label>
+          </li>
         </ul>
       </article>
       <article v-if="results.length === 0">no results</article>
-      <article v-for="result of results">
-        <h1 v-html="result._highlightResult.name.value"></h1>
-        <img v-bind:src="result.image">
-        <a v-bind:href="result.link">🔗</a>
-        <span>{{result.category}}</span>
-        <!-- <pre><code>{{result}}</code></pre> -->
-      </article>
+      <div class="mw6 center">
+        <article v-for="result of results" class="dt w-100 bb b--black-05 pb2 mt2">
+          <a v-bind:href="result.link" class="dtc w2 w3-ns v-mid">
+            <img v-bind:src="result.image" class="ba b--black-10 db br4 w2 w3-ns h2 h3-ns">
+          </a>
+          <div class="dtc v-mid pl3">
+            <h1 v-html="result._highlightResult.name.value" class="f6 f5-ns fw6 lh-title black mv0"></h1>
+            <span class="f6 fw4 mt0 mb0 black-60">{{result.category}}</span>
+          </div>
+          <div class="dtc v-mid">
+            <div class="w-100 tr">
+              <a v-bind:href="result.link" class="f6 button-reset bg-white ba b--black-10 dim pointer pv1 ph1 black-60">iTunes</a>
+            </div>
+          </div>
+        </article>
+      </div>
       <nav v-if="pagination.total > 0">
         <ul>
-          <li v-for="n in pagination.total" v-bind:class="{'active': n - 1 === pagination.current}"><button v-on:click.stop="paginate(n)">{{n}}</button></li>
+          <li v-for="n in pagination.total" v-bind:class="{'active': n - 1 === pagination.current}">
+            <button v-on:click.stop="paginate(n)">{{n}}</button>
+          </li>
         </ul>
       </nav>
     </section>
@@ -49,24 +65,24 @@
     },
     methods: {
       query() {
-        index.search(this.search, this.params, function searchDone(err, content) {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log(content);
-            this.results = content.hits;
-            this.pagination = {
-              total: content.nbPages,
-              current: content.page,
-              resultsPerPage: content.hitsPerPage
+          index.search(this.search, this.params, function searchDone(err, content) {
+            if (err) {
+              console.error(err);
+            } else {
+              console.log(content);
+              this.results = content.hits;
+              this.pagination = {
+                total: content.nbPages,
+                current: content.page,
+                resultsPerPage: content.hitsPerPage
+              }
             }
-          }
-        }.bind(this));
-      },
-      paginate(page) {
-        this.params.page = page - 1;
-        this.query();
-      }
+          }.bind(this));
+        },
+        paginate(page) {
+          this.params.page = page - 1;
+          this.query();
+        }
     }
   });
   vm.query();
