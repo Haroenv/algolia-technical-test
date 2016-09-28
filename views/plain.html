@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.3/css/tachyons.min.css"/>
+  <!-- todo -->
+</head>
 <body>
   <div id="app">
     <input type="search" v-model="search" v-on:input="query" id="search">
@@ -32,7 +35,7 @@
   const client = algoliasearch('XCG7JJBBFK', 'e3d622501fbbe065394049f746b16314');
   const index = client.initIndex('appstore');
 
-  new Vue({
+  const vm = new Vue({
     el: '#app',
     data: {
       search: '',
@@ -66,5 +69,6 @@
       }
     }
   });
+  vm.query();
   </script>
 </body>
