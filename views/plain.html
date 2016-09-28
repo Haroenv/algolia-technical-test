@@ -5,6 +5,12 @@
     <input type="search" v-model="search" v-on:input="query" id="search">
     <section>
       <h2>Results</h2>
+      <article>
+        <h1>category</h1>
+        <ul>
+          <li><input type="checkbox" id="box"><label for="box">some category</label></li>
+        </ul>
+      </article>
       <article v-if="results.length === 0">no results</article>
       <article v-for="result of results">
         <h1 v-html="result._highlightResult.name.value"></h1>
