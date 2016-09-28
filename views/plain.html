@@ -1,2 +1,40 @@
 <!DOCTYPE html>
-Hello Plain html!
+
+<body>
+  <div id="app">
+    <input type="search" v-model="search" v-on:input="query" id="search">
+    <section>
+      <h2>Results</h2>
+      <article v-if="results.length === 0">no results</article>
+      <article v-for="result of results">
+        {{result.name}}
+      </article>
+    </section>
+  </div>
+  <script src="http://rc.vuejs.org/js/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+  <script>
+  var client = algoliasearch('XCG7JJBBFK', 'e3d622501fbbe065394049f746b16314');
+  var index = client.initIndex('appstore');
+
+  new Vue({
+    el: '#app',
+    data: {
+      search: '',
+      results: []
+    },
+    methods: {
+      query() {
+        index.search(this.search, function searchDone(err, content) {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(content);
+            this.results = content.hits;
+          }
+        }.bind(this));
+      }
+    }
+  });
+  </script>
+</body>
