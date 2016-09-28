@@ -27,19 +27,11 @@
   <div id="app">
     <div class="w-100 flex items-center flex-column mv2">
       <p class="flex items-center"><img src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg" alt="logo of Algolia" title="Algolia" class="w3"> <span class="mh2">＋</span> <img src="https://s.haroen.me/img/vue.svg" alt="logo of vue" title="Vue" class="w3"></p>
-      <input type="search" v-model="search" class="w-80 f2 mh2 mv2 ph2 pv2 br2 b--black-10">
+      <al-input :helper="helper"></al-input>
     </div>
     <al-categories :categories="categories" :helper="helper"></al-categories>
     <al-sort :options="options" :helper="helper"></al-sort>
-    <section>
-      <h2>Results</h2>
-      <div>
-        <al-stats :hits="numberHits" :time="processingTime"></al-stats>
-        <article v-if="results.length === 0" class="center">no results</article>
-        <al-result v-for="result of results" :result="result"></al-result>
-      </div>
-      <al-pagination :current="pagination.current" :total="pagination.total" :helper="helper"></al-pagination>
-    </section>
+    <al-results :stats="stats" :pagination="pagination" :helper="helper" :results="results"></al-results>
   </div>
   <script src="https://rc.vuejs.org/js/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
@@ -85,9 +77,25 @@
       </select>
     </article>
   </script>
+  <script type="text/x-template" id="al-results-template">
+    <section>
+      <h2>Results</h2>
+      <div>
+        <al-stats :hits="stats.hits" :time="stats.time"></al-stats>
+        <article v-if="results.length === 0" class="center">no results</article>
+        <al-result v-for="result of results" :result="result"></al-result>
+      </div>
+      <al-pagination :current="pagination.current" :total="pagination.total" :helper="helper"></al-pagination>
+    </section>
+  </script>
+  <script type="text/x-template" id="al-input-template">
+    <input type="search" v-model="search" class="w-80 f2 mh2 mv2 ph2 pv2 br2 b--black-10">
+  </script>
   <script>
   const client = algoliasearch('XCG7JJBBFK', 'e3d622501fbbe065394049f746b16314');
-  const helper = algoliasearchHelper(client, 'appstore', {facets: ['category']});
+  const helper = algoliasearchHelper(client, 'appstore', {
+    facets: ['category']
+  });
 
   Vue.component('al-stats', {
     template: '#al-stats-template',
@@ -101,6 +109,16 @@
     template: '#al-result-template',
     props: {
       result: Object
+    }
+  });
+
+  Vue.component('al-results', {
+    template: '#al-results-template',
+    props: {
+      stats: Object,
+      pagination: Object,
+      results: Array,
+      helper: Object
     }
   });
 
@@ -133,8 +151,10 @@
 
   Vue.component('al-sort', {
     template: '#al-sort-template',
-    data(){
-      return {index: ''}
+    data() {
+      return {
+        index: ''
+      }
     },
     props: {
       options: Array,
@@ -147,11 +167,26 @@
     }
   });
 
+  Vue.component('al-input', {
+    template: '#al-input-template',
+    data() {
+      return {
+        search: ''
+      }
+    },
+    props: {
+      helper: Object
+    },
+    watch: {
+      search: (val) => {
+        helper.setQuery(val).search();
+      }
+    }
+  });
+
   const vm = new Vue({
     el: '#app',
     data: {
-      search: '',
-      params: {},
       results: [],
       pagination: {
         total: 0,
@@ -161,18 +196,15 @@
       options: [{
         index: 'appstore_rating_asc',
         name: 'Rank ascending'
-      },{
+      }, {
         index: 'appstore_rating_desc',
         name: 'Rank descending'
       }],
-      processingTime: 0,
-      numberHits: 0,
+      stats: {
+        time: 0,
+        hits: 0,
+      },
       helper: helper
-    },
-    watch: {
-      search: (val) => {
-        helper.setQuery(val).search();
-      }
     },
     methods: {
       queryDone(content) {
@@ -181,9 +213,11 @@
           total: content.nbPages,
           current: content.page
         };
+        this.stats = {
+          time: content.processingTimeMS,
+          hits: content.nbHits
+        };
         this.categories = content.getFacetValues('category');
-        this.processingTime = content.processingTimeMS;
-        this.numberHits = content.nbHits;
       }
     }
   });
