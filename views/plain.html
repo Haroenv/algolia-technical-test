@@ -7,15 +7,19 @@
       <h2>Results</h2>
       <article v-if="results.length === 0">no results</article>
       <article v-for="result of results">
-        {{result.name}}
+        <h1 v-html="result._highlightResult.name.value"></h1>
+        <img v-bind:src="result.image">
+        <a v-bind:href="result.link">🔗</a>
+        <span>{{result.category}}</span>
+        <!-- <pre><code>{{result}}</code></pre> -->
       </article>
     </section>
   </div>
   <script src="http://rc.vuejs.org/js/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
   <script>
-  var client = algoliasearch('XCG7JJBBFK', 'e3d622501fbbe065394049f746b16314');
-  var index = client.initIndex('appstore');
+  const client = algoliasearch('XCG7JJBBFK', 'e3d622501fbbe065394049f746b16314');
+  const index = client.initIndex('appstore');
 
   new Vue({
     el: '#app',
