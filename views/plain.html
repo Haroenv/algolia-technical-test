@@ -1,55 +1,58 @@
 <!DOCTYPE html>
 
 <head>
+  <title>Algolia technical test</title>
   <link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.3/css/tachyons.min.css" />
   <!-- todo -->
 </head>
 
 <body>
   <div id="app">
-    <input type="search" v-model="search" v-on:input="query" id="search">
+    <input type="search" v-model="search" @input="setQuery" id="search">
     <section>
       <h2>Results</h2>
       <article>
         <h1>category</h1>
         <ul>
-          <li>
-            <input type="checkbox" id="box">
-            <label for="box">some category</label>
+          <li v-for="category of categories" v-if="category">
+            <input type="checkbox" :id="'fl-' + category.name" :data-category="category.name" @change="refine" :checked="category.isRefined">
+            <label :for="'fl-' + category.name">{{category.name}} ({{category.count}})</label>
           </li>
         </ul>
       </article>
       <article v-if="results.length === 0">no results</article>
       <div class="mw6 center">
         <article v-for="result of results" class="dt w-100 bb b--black-05 pb2 mt2">
-          <a v-bind:href="result.link" class="dtc w2 w3-ns v-mid">
-            <img v-bind:src="result.image" class="ba b--black-10 db br4 w2 w3-ns h2 h3-ns">
+          <a :href="result.link" class="dtc w2 w3-ns v-mid">
+            <img :src="result.image" class="ba b--black-10 db br4 w2 w3-ns h2 h3-ns pointer">
           </a>
           <div class="dtc v-mid pl3">
-            <h1 v-html="result._highlightResult.name.value" class="f6 f5-ns fw6 lh-title black mv0"></h1>
+            <h1 class="f6 f5-ns fw6 lh-title black mv0"><a v-html="result._highlightResult.name.value" :href="result.link" class="link black"></a></h1>
             <span class="f6 fw4 mt0 mb0 black-60" v-html="result.category"></span>
           </div>
           <div class="dtc v-mid">
             <div class="w-100 tr">
-              <a v-bind:href="result.link" class="f6 button-reset bg-white ba b--black-10 dim pointer pv1 ph1 black-60">iTunes</a>
+              <a :href="result.link" class="f6 button-reset bg-white ba b--black-10 dim pointer pv1 ph1 black-60">iTunes</a>
             </div>
           </div>
         </article>
       </div>
-      <nav v-if="pagination.total > 0">
-        <ul>
-          <li v-for="n in pagination.total" v-bind:class="{'active': n - 1 === pagination.current}">
-            <button v-on:click.stop="paginate(n)">{{n}}</button>
-          </li>
-        </ul>
+      <nav v-if="pagination.total > 0" class="ph3 ph5-ns pv4">
+        <div class="nowrap overflow-x-auto">
+          <!-- :class="{'active': n - 1 === pagination.current}" -->
+          <a @click.stop="paginate(n)" class="link dim gray f5 f4-ns dib mr3 pointer" v-for="n in pagination.total">{{n}}</a>
+        </div>
       </nav>
     </section>
   </div>
   <script src="http://rc.vuejs.org/js/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/algoliasearch.helper/2.14.0/algoliasearch.helper.min.js"></script>
   <script>
   const client = algoliasearch('XCG7JJBBFK', 'e3d622501fbbe065394049f746b16314');
-  const index = client.initIndex('appstore');
+  const helper = algoliasearchHelper(client, 'appstore', {
+    facets: ['category']
+  });
 
   const vm = new Vue({
     el: '#app',
@@ -61,30 +64,35 @@
         total: 0,
         current: 0,
         resultsPerPage: 0
-      }
+      },
+      categories: []
     },
     methods: {
-      query() {
-          index.search(this.search, this.params, function searchDone(err, content) {
-            if (err) {
-              console.error(err);
-            } else {
-              console.log(content);
-              this.results = content.hits;
-              this.pagination = {
-                total: content.nbPages,
-                current: content.page,
-                resultsPerPage: content.hitsPerPage
-              }
-            }
-          }.bind(this));
-        },
-        paginate(page) {
-          this.params.page = page - 1;
-          this.query();
-        }
+      queryDone(content) {
+        this.results = content.hits;
+        this.pagination = {
+          total: content.nbPages,
+          current: content.page,
+          resultsPerPage: content.hitsPerPage
+        };
+        this.categories = content.getFacetValues('category');
+      },
+      setQuery() {
+        helper.setQuery(this.search)
+              .search();
+      },
+      refine(event) {
+        console.log(event.target.dataset.category);
+        helper.toggleRefinement('category', event.target.dataset.category)
+              .search();
+      },
+      paginate(page) {
+        this.params.page = page - 1;
+        this.query();
+      }
     }
   });
-  vm.query();
+  helper.on('result', vm.queryDone);
+  helper.search();
   </script>
 </body>
