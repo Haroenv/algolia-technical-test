@@ -19,9 +19,9 @@
         <span>{{result.category}}</span>
         <!-- <pre><code>{{result}}</code></pre> -->
       </article>
-      <nav>
+      <nav v-if="pagination.total > 0">
         <ul>
-          <li v-for="n in pagination.total"><button v-on:click.stop="paginate(n)">{{n}}</button></li>
+          <li v-for="n in pagination.total" v-bind:class="{'active': n - 1 === pagination.current}"><button v-on:click.stop="paginate(n)">{{n}}</button></li>
         </ul>
       </nav>
     </section>
@@ -61,7 +61,6 @@
         }.bind(this));
       },
       paginate(page) {
-        console.log(page);
         this.params.page = page - 1;
         this.query();
       }
