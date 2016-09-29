@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Technical test for Algolia internship. Built with express and Vue2",
   "scripts": {
-    "serve": "node server/index.js",
+    "start": "node index.js",
     "test": "xo"
   },
   "repository": {
