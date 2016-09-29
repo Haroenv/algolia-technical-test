@@ -46,7 +46,6 @@ Vue.component('al-search', {
           hits: content.nbHits
         };
         this.facets.forEach(facet => {
-          console.log(facet);
           this.facetValues[facet] = content.getFacetValues(facet);
         });
       },
