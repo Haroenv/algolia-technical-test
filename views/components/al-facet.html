@@ -1,8 +1,9 @@
 <script type="text/x-template" id="al-facet-template">
   <article>
-    <h1 class="hidden">name</h1>
+    <h1 class="hidden">{{name}}</h1>
     <div>
-      <button v-for="option of $parent.categories" v-if="option" class="f6 link dim br-pill ba b--black-10 bw1 ph3 pv2 mb2 mr1 dib bg-none" @click="refine(option.name)">{{option.name}} ({{option.count}})</button>
+      test
+      <button v-for="option of options" class="f6 link dim br-pill ba b--black-10 bw1 ph3 pv2 mb2 mr1 dib bg-none" @click="refine(option.name)">{{option.name}} ({{option.count}})</button>
     </div>
   </article>
 </script>
@@ -19,12 +20,12 @@ Vue.component('al-facet', {
       throw Error('this isn\'t a direct child of al-search or you forgot the v-bind:al-search');
     }
     return {
-      parent
+      parent,
+      options: parent.facetValues
     };
   },
   props: {
-    options: Array,
-    name: '',
+    name: String,
     alSearch: Object
   },
   methods: {

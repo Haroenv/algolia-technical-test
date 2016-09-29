@@ -8,28 +8,61 @@ The original requirements can be found at [requirements.md](requirements.md).
 
 ## Components
 
-This project uses several Vue components. All of them are prefixed with `al-`. You can either supply your own [`algoliaHelper`](https://github.com/algolia/algoliasearch-helper-js) in the `:helper` attribute, or nest the tags in an `al-search` tag and insert `:helper='helper'` in the child, that will deal with that complexity for you.
+This project uses several Vue components. All of them are prefixed with `al-`. You need to either directly nest the other components in an `al-search` or supply the `:al-search` attribute.
 
 Styling is opinionated and makes use of [Tachyons](https://tachyons.io).
 
 ### al-search
-**props**: `:app-id='XCG7JJBBFK', :api-key='e3d622501fbbe065394049f746b16314'`
+**props**: `app-id='XCG7JJBBFK' api-key='e3d622501fbbe065394049f746b16314' facets=''`
+
+A component that deals with the Algolia integration. Usually you'll wrap this around the other components.
+
 ### al-input
-**props**: `:helper='helper'`
+**props**: `:al-search='alSearch'`
+
+An input that will search over your specified `al-search`.
+
 ### al-facet
-**props**: `:options='categories' :name='"categories"' :helper='helper'`
+**props**: `:name='"categories"' :al-search='alSearch'`
+
+A component that allows you to filter over a certain facet. Take in account that you need to give an array of facets to the `relevant` `al-search`.
+
 ### al-sort
-**props**: `:options='options' :helper='helper'`
+**props**: `:options='options' :al-search='alSearch'`
+
+Allows you to pick a different index to search in.
+
+`options` can for example be:
+
+```js
+[{
+  index: 'appstore_rating_asc',
+  name: 'Rank ascending'
+}, {
+  index: 'appstore_rating_desc',
+  name: 'Rank descending'
+}]
+```
+
 ### al-stats
-**props**: `:hits='stats.hits' :time='stats.time'`
+**props**: `:al-search='alSearch'`
+
+A component that shows the amount of hits and the amount of time needed for the latest result.
+
 ### al-result
 **props**: `:result='result'`
-### al-pagination
-**props**: `:current='pagination.current' :total='pagination.total' :helper='helper'`
-### al-results
-**props**: `:stats='stats', :pagination='pagination' :results='results' :helper='helper'`
 
-A component that includes `stats`, `results` and `pagination`.
+Render a single search result.
+
+### al-pagination
+**props**: `:al-search='alSearch'`
+
+Render and handle pagination functions.
+
+### al-results
+**props**: `:al-search='alSearch'`
+
+A component that includes `stats`, `result`s and `pagination`.
 
 # Backend
 

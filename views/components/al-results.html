@@ -2,11 +2,11 @@
   <section>
     <h2>Results</h2>
     <div>
-      <al-stats :hits="parent.stats.hits" :time="parent.stats.time"></al-stats>
+      <al-stats :al-search="parent"></al-stats>
       <article v-if="parent.results.length === 0" class="center">no results</article>
       <al-result v-for="result of $parent.results" :result="result"></al-result>
     </div>
-    <al-pagination :current="parent.pagination.current" :total="parent.pagination.total" :al-search="parent"></al-pagination>
+    <al-pagination :al-search="parent"></al-pagination>
   </section>
 </script>
 <script>

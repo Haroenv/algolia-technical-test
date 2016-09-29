@@ -9,7 +9,7 @@ Vue.component('al-search', {
   data() {
     const client = algoliasearch(this.appId, this.apiKey);
     const helper = algoliasearchHelper(client, 'appstore', {
-      facets: ['category']
+      facets: this.facets
     });
     helper.on('result', content => {
       this.queryDone(content);
@@ -21,14 +21,7 @@ Vue.component('al-search', {
         total: 0,
         current: 1
       },
-      categories: [],
-      options: [{
-        index: 'appstore_rating_asc',
-        name: 'Rank ascending'
-      }, {
-        index: 'appstore_rating_desc',
-        name: 'Rank descending'
-      }],
+      facetValues: {},
       stats: {
         time: 0,
         hits: 0,
@@ -38,33 +31,37 @@ Vue.component('al-search', {
   },
   props: {
     appId: String,
-    apiKey: String
+    apiKey: String,
+    facets: Array
   },
   methods: {
     queryDone(content) {
-      this.results = content.hits;
-      this.pagination = {
-        total: content.nbPages,
-        current: content.page
-      };
-      this.stats = {
-        time: content.processingTimeMS,
-        hits: content.nbHits
-      };
-      this.categories = content.getFacetValues('category');
-    },
-    setQuery(val) {
-      this.helper.setQuery(val).search();
-    },
-    setPage(page) {
-      this.helper.setPage(page).search();
-    },
-    setRefinement(facet, value) {
-      this.helper.toggleRefinement(facet, value).search();
-    },
-    setIndex(index) {
-      this.helper.setIndex(index).search();
-    }
+        this.results = content.hits;
+        this.pagination = {
+          total: content.nbPages,
+          current: content.page
+        };
+        this.stats = {
+          time: content.processingTimeMS,
+          hits: content.nbHits
+        };
+        this.facets.forEach(facet => {
+          console.log(facet);
+          this.facetValues[facet] = content.getFacetValues(facet);
+        });
+      },
+      setQuery(val) {
+        this.helper.setQuery(val).search();
+      },
+      setPage(page) {
+        this.helper.setPage(page).search();
+      },
+      setRefinement(facet, value) {
+        this.helper.toggleRefinement(facet, value).search();
+      },
+      setIndex(index) {
+        this.helper.setIndex(index).search();
+      }
   }
 });
 </script>
