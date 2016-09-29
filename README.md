@@ -13,7 +13,7 @@ This project uses several Vue components. All of them are prefixed with `al-`. Y
 Styling is opinionated and makes use of [Tachyons](https://tachyons.io).
 
 ### al-search
-**props**: `app-id='XCG7JJBBFK' api-key='e3d622501fbbe065394049f746b16314' facets=''`
+**props**: `app-id='XCG7JJBBFK' api-key='e3d622501fbbe065394049f746b16314' facets='["category"]'`
 
 A component that deals with the Algolia integration. Usually you'll wrap this around the other components. If that's not the case, then you will have to pass a reference to this `al-search` as a prop to each of the other components.
 
@@ -23,7 +23,7 @@ A component that deals with the Algolia integration. Usually you'll wrap this ar
 An input that will search over your specified `al-search`.
 
 ### al-facet
-**props**: `:name='"categories"' :al-search='alSearch'`
+**props**: `:name='"category"' :al-search='alSearch'`
 
 A component that allows you to filter over a certain facet. Take in account that you need to give an array of facets to the `relevant` `al-search`.
 
