@@ -15,7 +15,7 @@ Styling is opinionated and makes use of [Tachyons](https://tachyons.io).
 ### al-search
 **props**: `app-id='XCG7JJBBFK' api-key='e3d622501fbbe065394049f746b16314' facets=''`
 
-A component that deals with the Algolia integration. Usually you'll wrap this around the other components.
+A component that deals with the Algolia integration. Usually you'll wrap this around the other components. If that's not the case, then you will have to pass a reference to this `al-search` as a prop to each of the other components.
 
 ### al-input
 **props**: `:al-search='alSearch'`
