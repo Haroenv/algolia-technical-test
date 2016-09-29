@@ -1,1 +1,31 @@
-include plain.html
+doctype html
+include includes/head.html
+body.mw8.center.ph2
+  #app
+    al-search(app-id='XCG7JJBBFK', api-key='e3d622501fbbe065394049f746b16314')
+      .w-100.flex.items-center.flex-column.mv2
+        .flex.items-center
+          a(href='https://algolia.com')
+            img.w3(src='https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg', alt='logo of Algolia', title='Algolia')
+          span.mh2(title='plus') &#xFF0B;
+          a(href='https://vuejs.org')
+            img.w3(src='https://s.haroen.me/img/vue.svg', alt='logo of vue', title='Vue')
+        al-input
+      al-facet(name='category')
+      al-sort
+      al-results
+  script(src='https://rc.vuejs.org/js/vue.js')
+  script(src='https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
+  script(src='https://cdn.jsdelivr.net/algoliasearch.helper/2.14.0/algoliasearch.helper.min.js')
+  include components/al-search.html
+  include components/al-input.html
+  include components/al-facet.html
+  include components/al-pagination.html
+  include components/al-result.html
+  include components/al-results.html
+  include components/al-sort.html
+  include components/al-stats.html
+  script.
+    new Vue({
+      el: '#app',
+    });

@@ -2,34 +2,46 @@
 
 This project is made for the technical test part of the Algolia hiring process.
 
->The app is composed by 2 parts:
+The original requirements can be found at [requirements.md](requirements.md).
 
->* the backend: handling the HTTP routing & the Algolia indexing,
->and the frontend: displaying an instant-search interface to search in the underlying items. In the spirit of https://demo.algolia.com/instant-search-demo/
->* The app you need to build is a small Appstore search. The initial import dataset can be found here: data.json (just below this subject).
+# Frontend
 
->## Backend
+## Components
 
->Build the smallest MVC framework able to route an HTTP query and send the response.
+This project uses several Vue components. All of them are prefixed with `al-`. You can either supply your own [`algoliaHelper`](https://github.com/algolia/algoliasearch-helper-js) in the `:helper` attribute, or nest the tags in an `al-search` tag and insert `:helper='helper'` in the child, that will deal with that complexity for you.
 
->The framework does not need to handle more than what is required for the app.
+Styling is opinionated and makes use of [Tachyons](https://tachyons.io).
 
->The app needs to implement the following endpoints:
+### al-search
+**props**: `:app-id='XCG7JJBBFK', :api-key='e3d622501fbbe065394049f746b16314'`
+### al-input
+**props**: `:helper='helper'`
+### al-facet
+**props**: `:options='categories' :name='"categories"' :helper='helper'`
+### al-sort
+**props**: `:options='options' :helper='helper'`
+### al-stats
+**props**: `:hits='stats.hits' :time='stats.time'`
+### al-result
+**props**: `:result='result'`
+### al-pagination
+**props**: `:current='pagination.current' :total='pagination.total' :helper='helper'`
+### al-results
+**props**: `:stats='stats', :pagination='pagination' :results='results' :helper='helper'`
 
->GET / => Render an HTML page displaying an instant-search interface searching in an Algolia apps index.
->POST /api/1/apps => Add an app (as a JSON object) to the Algolia apps index and return its id
->DELETE /api/1/apps/:id => Delete an app from the Algolia index
->You can use any technology for this.
+A component that includes `stats`, `results` and `pagination`.
 
->## Frontend
+# Backend
 
->Build a nice looking, relevant & fast instant-search interface searching in the underlying apps.
+The backend is written in Express and has two main routes. Static routes, which are in `/controllers/index.js` and API routes, which are in `/controllers/api/`.
 
->You must use Vue.js 2 to build this demo.
+## API v1
 
->The frontend UI should include:
+The API route `1/index.js` contains two methods:
 
->a searchbox
->list of apps found
->a categories filtering (faceting)
->a sort by rank (default asc, allow desc and any other sort you want)
+* `POST /api/1/apps` with a JSON body this will be added to the `appstore` Algolia index.
+* `DELETE /api/1/apps/:id` will delete the object with that idea at the `appstore` Algolia index.
+
+# Setup
+
+The api routes require an Algolia Admin API Key you can find on [algolia.com/api-keys](https://www.algolia.com/api-keys). This should be set as the [environment variable](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameters.html#Shell-Parameters) `ALGOLIA_API_KEY`. Other API keys are at `/controllers/api/1/index.js` and `/views/index.pug`.

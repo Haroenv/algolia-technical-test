@@ -1,0 +1,36 @@
+<script type="text/x-template" id="al-facet-template">
+  <article>
+    <h1 class="hidden">name</h1>
+    <div>
+      <button v-for="option of $parent.categories" v-if="option" class="f6 link dim br-pill ba b--black-10 bw1 ph3 pv2 mb2 mr1 dib bg-none" @click="refine(option.name)">{{option.name}} ({{option.count}})</button>
+    </div>
+  </article>
+</script>
+<script>
+Vue.component('al-facet', {
+  template: '#al-facet-template',
+  data() {
+    let parent;
+    if (this.$parent.appId) {
+      parent = this.$parent;
+    } else if (this.alSearch) {
+      parent = this.alSearch;
+    } else {
+      throw Error('this isn\'t a direct child of al-search or you forgot the v-bind:al-search');
+    }
+    return {
+      parent
+    };
+  },
+  props: {
+    options: Array,
+    name: '',
+    alSearch: Object
+  },
+  methods: {
+    refine(option) {
+      this.parent.setRefinement(this.name, option);
+    }
+  }
+});
+</script>

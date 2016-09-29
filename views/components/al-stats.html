@@ -1,0 +1,12 @@
+<script type="text/x-template" id="al-stats-template">
+  <p>{{hits}} hits in {{time}}ms</p>
+</script>
+<script>
+Vue.component('al-stats', {
+  template: '#al-stats-template',
+  props: {
+    hits: Number,
+    time: Number
+  }
+});
+</script>

@@ -1,0 +1,32 @@
+<script type="text/x-template" id="al-results-template">
+  <section>
+    <h2>Results</h2>
+    <div>
+      <al-stats :hits="parent.stats.hits" :time="parent.stats.time"></al-stats>
+      <article v-if="parent.results.length === 0" class="center">no results</article>
+      <al-result v-for="result of $parent.results" :result="result"></al-result>
+    </div>
+    <al-pagination :current="parent.pagination.current" :total="parent.pagination.total" :al-search="parent"></al-pagination>
+  </section>
+</script>
+<script>
+Vue.component('al-results', {
+  template: '#al-results-template',
+  data() {
+    let parent;
+    if (this.$parent.appId) {
+      parent = this.$parent;
+    } else if (this.alSearch) {
+      parent = this.alSearch;
+    } else {
+      throw Error('this isn\'t a direct child of al-search or you forgot the v-bind:al-search');
+    }
+    return {
+      parent
+    };
+  },
+  props: {
+    alSearch: Object
+  }
+});
+</script>
