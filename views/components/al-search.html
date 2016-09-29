@@ -11,9 +11,6 @@ Vue.component('al-search', {
     const helper = algoliasearchHelper(client, 'appstore', {
       facets: this.facets
     });
-    helper.on('result', content => {
-      this.queryDone(content);
-    });
     helper.search();
     return {
       results: [],
@@ -34,33 +31,38 @@ Vue.component('al-search', {
     apiKey: String,
     facets: Array
   },
+  created() {
+    this.helper.on('result', content => {
+      this.queryDone(content);
+    });
+  },
   methods: {
     queryDone(content) {
-        this.results = content.hits;
-        this.pagination = {
-          total: content.nbPages,
-          current: content.page
-        };
-        this.stats = {
-          time: content.processingTimeMS,
-          hits: content.nbHits
-        };
-        this.facets.forEach(facet => {
-          this.facetValues[facet] = content.getFacetValues(facet);
-        });
-      },
-      setQuery(val) {
-        this.helper.setQuery(val).search();
-      },
-      setPage(page) {
-        this.helper.setPage(page).search();
-      },
-      setRefinement(facet, value) {
-        this.helper.toggleRefinement(facet, value).search();
-      },
-      setIndex(index) {
-        this.helper.setIndex(index).search();
-      }
+      this.results = content.hits;
+      this.pagination = {
+        total: content.nbPages,
+        current: content.page
+      };
+      this.stats = {
+        time: content.processingTimeMS,
+        hits: content.nbHits
+      };
+      this.facets.forEach(facet => {
+        this.$set(this.facetValues,facet, content.getFacetValues(facet));
+      });
+    },
+    setQuery(val) {
+      this.helper.setQuery(val).search();
+    },
+    setPage(page) {
+      this.helper.setPage(page).search();
+    },
+    setRefinement(facet, value) {
+      this.helper.toggleRefinement(facet, value).search();
+    },
+    setIndex(index) {
+      this.helper.setIndex(index).search();
+    }
   }
 });
 </script>
