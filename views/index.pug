@@ -14,6 +14,21 @@ body.mw8.center.ph2.avenir
       al-facet(name='category')
       al-sort(:options="[{index: 'appstore_rating_asc',name: 'Rank ascending'}, {index: 'appstore_rating_desc',name: 'Rank descending'}]")
       al-results
+  footer.tc.o-60
+    p
+      | Built by&#32;
+      a(href="https://haroen.me") Haroen Viaene
+      | &#32;for&#32;
+      a(href="https://www.algolia.com") Algolia
+      | &#32;with&#32;
+      a(href="https://github.com/algolia/algoliasearch-client-js") Algolia search
+      | ,&#32;
+      a(href="https://rc.vuejs.org") Vue 2
+      | &#32;and&#32;
+      a(href="http://tachyons.io") Tachyons
+      | . Code available on&#32;
+      a(href="https://github.com/Haroenv/algolia-technical-test") GitHub
+      |.
   script(src='https://unpkg.com/vue@2.0.0-rc.8/dist/vue.min.js')
   script(src='https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
   script(src='https://cdn.jsdelivr.net/algoliasearch.helper/2.14.0/algoliasearch.helper.min.js')
