@@ -23,7 +23,7 @@ A component that deals with the Algolia integration. Usually you'll wrap this ar
 An input that will search over your specified `al-search`.
 
 ### al-facet
-**props**: `:name='"category"' :al-search='alSearch'`
+**props**: `name='category' :al-search='alSearch'`
 
 A component that allows you to filter over a certain facet. Take in account that you need to give an array of facets to the `relevant` `al-search`.
 
