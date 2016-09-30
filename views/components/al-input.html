@@ -1,5 +1,7 @@
 <script type="text/x-template" id="al-input-template">
-  <input type="search" v-model="search" placeholder="search" class="w-80 f2 mh2 mv2 ph2 pv2 br2 b--black-10 input-reset">
+  <div class="w-80 flex">
+    <input type="search" v-model="search" placeholder="search" class="f2 mh2 mv2 ph2 pv2 br2 b--black-10 input-reset flex-auto"><button @click="reset" class="dim br-pill ba b--black-10 bg-none">⤫</button>
+  </div>
 </script>
 <script>
 Vue.component('al-input', {
@@ -24,6 +26,11 @@ Vue.component('al-input', {
   watch: {
     search() {
       this.parent.setQuery(this.search);
+    }
+  },
+  methods: {
+    reset() {
+      this.search = '';
     }
   }
 });

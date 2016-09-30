@@ -26,6 +26,9 @@ Vue.component('al-sort', {
     options: Array,
     alSearch: Object
   },
+  mounted() {
+    this.index = this.options[0].index;
+  },
   watch: {
     index() {
       this.parent.setIndex(this.index);
