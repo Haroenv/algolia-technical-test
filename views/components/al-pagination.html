@@ -1,7 +1,7 @@
 <script type="text/x-template" id="al-pagination-template">
   <nav v-if="parent.pagination.total > 1" class="ph3 ph5-ns pv4">
     <div class="nowrap overflow-x-auto">
-      <a @click="paginate(n - 1)" :class="(n - 1 === parent.pagination.current ? 'black ' : 'gray ') +'link dim f5 f4-ns dib mh2 pointer'" v-for="n of parent.pagination.total">{{n}}</a>
+      <a @click="paginate(n - 1)" :class="(n - 1 === parent.pagination.current ? 'black ' : 'gray ') + 'link dim f5 f4-ns dib mh2 pointer'" v-for="n of parent.pagination.total">{{n}}</a>
     </div>
   </nav>
 </script>
