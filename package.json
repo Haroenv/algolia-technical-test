@@ -2,6 +2,7 @@
   "name": "algolia-technical-test",
   "version": "0.0.0",
   "description": "Technical test for Algolia internship. Built with express and Vue2",
+  "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
