@@ -1,13 +1,13 @@
-<script type="text/x-template" id="al-sort-template">
+<template>
   <article>
     <select v-model="index">
       <option :value="option.index" v-for="option of options">{{option.name}}</option>
     </select>
   </article>
-</script>
+</template>
+
 <script>
-Vue.component('al-sort', {
-  template: '#al-sort-template',
+export default {
   data() {
     let parent;
     if (this.$parent.appId) {
@@ -34,5 +34,5 @@ Vue.component('al-sort', {
       this.parent.setIndex(this.index);
     }
   }
-});
+}
 </script>

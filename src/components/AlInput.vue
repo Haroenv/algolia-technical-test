@@ -1,11 +1,11 @@
-<script type="text/x-template" id="al-input-template">
+<template>
   <div class="w-80 flex">
     <input type="search" v-model="search" placeholder="search" class="f2 mh2 mv2 ph2 pv2 br2 b--black-10 input-reset flex-auto"><button @click="reset" class="bn bg-none outline-0 pointer f2 ph2">×</button>
   </div>
-</script>
+</template>
+
 <script>
-Vue.component('al-input', {
-  template: '#al-input-template',
+export default {
   data() {
     let parent;
     if (this.$parent.appId) {
@@ -33,5 +33,5 @@ Vue.component('al-input', {
       this.search = '';
     }
   }
-});
+}
 </script>

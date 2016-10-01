@@ -1,4 +1,4 @@
-<script type="text/x-template" id="al-result-template">
+<template>
   <article class="dt w-100 bb b--black-05 pb2 mt2">
     <a :href="result.link" class="dtc w2 w3-ns v-mid">
       <img :src="result.image" class="ba b--black-10 db br3 br4-ns w2 w3-ns h2 h3-ns pointer">
@@ -13,12 +13,12 @@
       </div>
     </div>
   </article>
-</script>
+</template>
+
 <script>
-  Vue.component('al-result', {
-    template: '#al-result-template',
-    props: {
-      result: Object
-    }
-  });
+export default {
+  props: {
+    result: Object
+  }
+}
 </script>

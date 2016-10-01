@@ -1,20 +1,14 @@
-<style>
-.crossbefore:before {
-  content: '× ';
-  color: inherit;
-}
-</style>
-<script type="text/x-template" id="al-facet-template">
+<template>
   <article>
     <h1 class="f3">{{name}}</h1>
     <div>
       <button v-for="option of options" :class="(options.length === 1 ? 'crossbefore ' : '') + 'f6 link dim br-pill ba b--black-10 bw1 ph3 pv2 mb2 mr1 dib bg-none'" @click="refine(option.name)">{{option.name}} ({{option.count}})</button>
     </div>
   </article>
-</script>
+</template>
+
 <script>
-Vue.component('al-facet', {
-  template: '#al-facet-template',
+export default {
   computed: {
     parent() {
       let parent;
@@ -40,5 +34,12 @@ Vue.component('al-facet', {
       this.parent.setRefinement(this.name, option);
     }
   }
-});
+}
 </script>
+
+<style scoped>
+.crossbefore:before {
+  content: '× ';
+  color: inherit;
+}
+</style>

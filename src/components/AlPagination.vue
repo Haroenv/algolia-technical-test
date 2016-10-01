@@ -1,13 +1,13 @@
-<script type="text/x-template" id="al-pagination-template">
+<template>
   <nav v-if="parent.pagination.total > 1" class="ph3 ph5-ns pv4">
     <div class="nowrap overflow-x-auto">
       <a @click="paginate(n - 1)" :class="(n - 1 === parent.pagination.current ? 'black ' : 'gray ') + 'link dim f5 f4-ns dib mh2 pointer'" v-for="n of parent.pagination.total">{{n}}</a>
     </div>
   </nav>
-</script>
+</template>
+
 <script>
-Vue.component('al-pagination', {
-  template: '#al-pagination-template',
+export default {
   data() {
     let parent;
     if (this.$parent.appId) {
@@ -29,5 +29,5 @@ Vue.component('al-pagination', {
       this.parent.setPage(page);
     }
   }
-});
+}
 </script>

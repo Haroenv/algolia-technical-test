@@ -1,4 +1,4 @@
-<script type="text/x-template" id="al-results-template">
+<template>
   <section>
     <h2>Results</h2>
     <div>
@@ -8,10 +8,13 @@
     </div>
     <al-pagination :al-search="parent"></al-pagination>
   </section>
-</script>
+</template>
 <script>
-Vue.component('al-results', {
-  template: '#al-results-template',
+import AlStats from './AlStats.vue'
+import AlResult from './AlResult.vue'
+import AlPagination from './AlPagination.vue'
+
+export default {
   data() {
     let parent;
     if (this.$parent.appId) {
@@ -27,6 +30,11 @@ Vue.component('al-results', {
   },
   props: {
     alSearch: Object
+  },
+  components: {
+    AlStats: AlStats,
+    AlResult: AlResult,
+    AlPagination: AlPagination
   }
-});
+}
 </script>

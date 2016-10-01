@@ -1,17 +1,19 @@
-<script type="text/x-template" id="al-search-template">
+<template>
   <div>
     <slot></slot>
   </div>
-</script>
+</template>
+
 <script>
-Vue.component('al-search', {
-  template: '#al-search-template',
+import algoliasearch from 'algoliasearch'
+import algoliasearchHelper from 'algoliasearch-helper'
+
+export default {
   data() {
     const client = algoliasearch(this.appId, this.apiKey);
     const helper = algoliasearchHelper(client, 'appstore', {
       facets: this.facets
     });
-    helper.search();
     return {
       results: [],
       pagination: {
@@ -35,6 +37,9 @@ Vue.component('al-search', {
     this.helper.on('result', content => {
       this.queryDone(content);
     });
+  },
+  mounted() {
+    this.helper.search();
   },
   methods: {
     queryDone(content) {
@@ -64,5 +69,5 @@ Vue.component('al-search', {
       this.helper.setIndex(index).search();
     }
   }
-});
+}
 </script>

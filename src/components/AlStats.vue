@@ -1,9 +1,9 @@
-<script type="text/x-template" id="al-stats-template">
+<template>
   <p class="o-40">{{parent.stats.hits}} hits in {{parent.stats.time}}ms</p>
-</script>
+</template>
+
 <script>
-Vue.component('al-stats', {
-  template: '#al-stats-template',
+export default {
   data() {
     let parent;
     if (this.$parent.appId) {
@@ -20,5 +20,5 @@ Vue.component('al-stats', {
   props: {
     alSearch: Object
   }
-});
+}
 </script>
