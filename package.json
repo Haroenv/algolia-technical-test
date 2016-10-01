@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --hot",
-    "build": "webpack --progress --hide-modules",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "start": "npm run build && node index.js",
     "test": "xo"
   },
@@ -35,6 +35,7 @@
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-preset-es2015": "^6.0.0",
+    "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
     "vue-loader": "^9.4.0",
