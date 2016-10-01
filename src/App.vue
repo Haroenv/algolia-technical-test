@@ -18,11 +18,13 @@ import AlFacet from './components/AlFacet.vue'
 import AlInput from './components/AlInput.vue'
 import AlResults from './components/AlResults.vue'
 import AlSearch from './components/AlSearch.vue'
+import AlSort from './components/AlSort.vue'
 
 export default {
   components: {
     AlFacet: AlFacet,
     AlInput: AlInput,
+    AlSort: AlSort,
     AlResults: AlResults,
     AlSearch: AlSearch
   }
