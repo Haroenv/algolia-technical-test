@@ -9,7 +9,7 @@
     </div>
     <div class="dtc v-mid">
       <div class="w-100 tr">
-        <a :href="result.link" class="f6 button-reset bg-white ba b--black-10 dim pointer pv2 ph2 black-60">iTunes</a>
+        <a :href="result.link" class="f6 button-reset bg-white ba b--black-10 dim pointer pv2 ph2 ml1 black-60">iTunes</a>
       </div>
     </div>
   </article>
