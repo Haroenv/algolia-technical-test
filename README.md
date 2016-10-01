@@ -78,3 +78,5 @@ The API route `1/index.js` contains two methods:
 # Setup
 
 The api routes require an Algolia Admin API Key you can find on [algolia.com/api-keys](https://www.algolia.com/api-keys). This should be set as the [environment variable](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameters.html#Shell-Parameters) `ALGOLIA_API_KEY`. Other API keys are at `/controllers/api/1/index.js` and `/views/index.pug`.
+
+To build a production version, you'll need to set `NODE_ENV` to `production`.
