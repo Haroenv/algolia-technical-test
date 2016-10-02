@@ -8,16 +8,14 @@ var index = client.initIndex('appstore');
 // post a new Object to Algolia
 router.post('/apps', (req, res) => {
   try {
-    const body = JSON.parse(req.body);
-    index.addObject(body, (err, content) => {
+    index.addObject(req.body, (err, content) => {
       if (err) {
-        res.send(err);
+        res.json(err);
       }
-      res.header('Content-Type', 'application/json');
-      res.send(content);
+      res.json(content);
     });
   } catch (err) {
-    res.send(err);
+    res.json(err);
   }
 });
 
@@ -25,8 +23,7 @@ router.post('/apps', (req, res) => {
 router.delete('/apps/:id', (req, res) => {
   index.deleteObject(req.params.id, err => {
     if (err) {
-      res.header('Content-Type', 'application/json');
-      res.send(err);
+      res.json(err);
     }
     res.send('deleted ' + req.params.id);
   });
