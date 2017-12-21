@@ -1,6 +1,6 @@
 <template>
   <div class="w-80 flex">
-    <form action="" @submit="blur">
+    <form action="" @submit="blur" class="flex flex-auto">
       <input type="search" v-model="search" placeholder="search" ref="input" class="f2 mh2 mv2 ph2 pv2 br2 b--black-10 input-reset flex-auto">
       <button type="reset" class="bn bg-none outline-0 pointer f2 ph2">×</button>
     </form>
@@ -35,6 +35,7 @@ export default {
     },
     reset() {
       this.$refs.input.focus();
+      this.search = '';
     }
   },
 }
