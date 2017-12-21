@@ -1,6 +1,9 @@
 <template>
   <div class="w-80 flex">
-    <input type="search" v-model="search" placeholder="search" class="f2 mh2 mv2 ph2 pv2 br2 b--black-10 input-reset flex-auto"><button @click="reset" class="bn bg-none outline-0 pointer f2 ph2">×</button>
+    <form action="" @submit="blur">
+      <input type="search" v-model="search" placeholder="search" ref="input" class="f2 mh2 mv2 ph2 pv2 br2 b--black-10 input-reset flex-auto">
+      <button type="reset" class="bn bg-none outline-0 pointer f2 ph2">×</button>
+    </form>
   </div>
 </template>
 
@@ -26,12 +29,13 @@ export default {
   watch: {
     search() {
       this.parent.setQuery(this.search);
+    },
+    submit() {
+      this.$refs.input.blur();
+    },
+    reset() {
+      this.$refs.input.focus();
     }
   },
-  methods: {
-    reset() {
-      this.search = '';
-    }
-  }
 }
 </script>
